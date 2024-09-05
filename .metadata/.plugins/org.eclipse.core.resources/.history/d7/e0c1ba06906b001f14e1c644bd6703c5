@@ -1,0 +1,233 @@
+//package registerFunctionality;
+
+import java.time.Duration;
+import java.util.List;
+import java.util.Random;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.asserts.SoftAssert;
+
+public class TrialAndError {
+
+	public static void main(String[] args) throws InterruptedException {
+		// TODO Auto-generated method stub
+		// Test case description...
+		/*
+		 * Test case ID- TC_REG_010 test case scenario - (TS_UI_004) Register
+		 * Functionality Verify password field meets minimum length and complexity
+		 * requirements.
+		 */
+
+		System.setProperty("webdriver.chrome.driver", "D:\\Bits New Trainning Automation\\Drivers/chromedriver.exe");
+		WebDriver driver = new ChromeDriver();
+		JavascriptExecutor js = (JavascriptExecutor) driver;
+
+		driver.manage().window().maximize();
+		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(15));
+
+		// Accessing The locally hosted website
+		driver.get("http://localhost/opencart/upload/");
+		
+		List<WebElement> allEle= initialisation( driver);
+		WebElement myAccount = allEle.get(0);
+		WebElement register = allEle.get(1);
+		myAccount.click();
+		register.click();
+
+		// comment out the above code if you want to use the global site
+
+		// Access The Website
+//      driver.get("https://demo.opencart.com/en-gb?route=account/register");
+
+		String registrationUrl = "http://localhost/opencart/upload/index.php?route=account/register&language=en-gb";
+		String accountCreationPage = "http://localhost/opencart/upload/index.php?route=account/success&language=en-gb&customer_token=fe80e7f4d73c8f9578decbf9b7";
+
+		// Initialising Soft Assert
+		SoftAssert softAssert = new SoftAssert();
+
+		// List of Invalid Passwords
+		List<String> invalidPass = List.of("123", "abc", "abc123", "Abc123");
+
+		// List Of Valid Passwords
+		List<String> validPass = List.of("Abc@123", "abx!33", "lmn123$$");
+
+		List<WebElement> formEle= formInit(driver,js,wait);
+		
+		WebElement firstNameField = formEle.get(0);
+		WebElement lastNameField = formEle.get(1);
+		WebElement emailField = formEle.get(2);
+		WebElement passField = formEle.get(3);
+		WebElement subscribe = formEle.get(4);
+		WebElement agreeCheckbox = formEle.get(5);
+		WebElement submit = formEle.get(6);
+		WebElement errorMessage = formEle.get(7);
+
+		// Test User Information
+		String firstName = "abc";
+		String lastName = "xyz";
+//		String baseEmail = "abc.xyz";
+
+		// Test Invalid Passwords
+		for (int i = 0; i < invalidPass.size(); i++) {
+			String password = invalidPass.get(i);
+			String uniqueEmail = generateUniqueEmail(firstName, lastName);
+
+			firstNameField.clear();
+			firstNameField.sendKeys(firstName);
+			lastNameField.clear();
+			lastNameField.sendKeys(lastName);
+			emailField.clear();
+			emailField.sendKeys(uniqueEmail);
+			passField.clear();
+			passField.sendKeys(password);
+
+			js.executeScript("arguments[0].scrollIntoView(true);", subscribe);
+			wait.until(ExpectedConditions.elementToBeClickable(subscribe));
+
+			try {
+//				subscribe.click();
+				js.executeScript("arguments[0].click();", subscribe);
+			} catch (org.openqa.selenium.ElementClickInterceptedException e) {
+				js.executeScript("arguments[0].click();", subscribe);
+			}
+
+			js.executeScript("arguments[0].scrollIntoView();", agreeCheckbox);
+			wait.until(ExpectedConditions.elementToBeClickable(agreeCheckbox));
+
+			try {
+//				agreeCheckbox.click();
+				js.executeScript("arguments[0].click();", agreeCheckbox);
+				
+			} catch (org.openqa.selenium.ElementClickInterceptedException e) {
+				js.executeScript("arguments[0].click();", agreeCheckbox);
+			}
+
+			js.executeScript("arguments[0].scrollIntoView(true)", submit);
+			wait.until(ExpectedConditions.elementToBeClickable(submit));
+
+			try {
+//				submit.click();
+				js.executeScript("arguments[0].click();", submit);
+			} catch (org.openqa.selenium.ElementClickInterceptedException e) {
+				js.executeScript("arguments[0].click();", submit);
+
+			}
+	Thread.sleep(5000);
+			// Check error messages for invalid password
+			if (driver.getCurrentUrl().contains(registrationUrl)) {
+				String actErrorMsg = errorMessage.getText();
+				System.out.println(actErrorMsg);
+				softAssert.assertTrue(actErrorMsg.contains("Password must be between 6 and 20 characters!"),
+						"Error message for invalid password '" + password + "' not displayed correctly");
+			} else{
+				softAssert.assertTrue(driver.getCurrentUrl().contains(accountCreationPage),
+						"Test failed: User was not redirected to the login page for valid password '" + password
+								+ "'.");
+//				driver.navigate().to(registrationUrl);
+				
+				 
+				WebElement logout = driver.findElement(By.xpath("(//a[@href='http://localhost/opencart/upload/index.php?route=account/logout&language=en-gb'])[2]"));
+				js.executeScript("arguments[0].scrollIntoView();", logout);
+				wait.until(ExpectedConditions.elementToBeClickable(logout));
+				try{
+					logout.click();
+				}catch(org.openqa.selenium.ElementClickInterceptedException e) {
+					js.executeScript("arguments[0].click();", logout);
+				}
+				
+				List<WebElement>reRoute= initialisation( driver);
+				WebElement myAccount1 = reRoute.get(0);
+				WebElement register2 = reRoute.get(1);
+				myAccount1.click();
+				register2.click();
+				
+				
+				WebElement loginContainer = driver.findElement(By.id("account"));
+		        js.executeScript("arguments[0].scrollIntoView(true);", loginContainer);
+		        wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("account")));
+			 formEle= formInit(driver,js,wait);
+			
+			 firstNameField = formEle.get(0);
+			 lastNameField = formEle.get(1);
+			 emailField = formEle.get(2);
+			 passField = formEle.get(3);
+			 subscribe = formEle.get(4);
+			 agreeCheckbox = formEle.get(5);
+			 submit = formEle.get(6);
+			 errorMessage = formEle.get(7);
+			
+				
+			}
+		}
+		
+		//Testing Valid Passwords
+		
+//		for(int i =0; i<validPass.size();i++) {
+//			String uniqueEmail = generateUniqueEmail(i, baseEmail);
+//			
+//			
+//		}
+
+		//http://localhost/opencart/upload/index.php?route=account/register&language=en-gb
+		//http://localhost/opencart/upload/index.php?route=account/success&language=en-gb&customer_token=f59c4eb141036f59a62a215af1
+		
+		
+		// Report all soft assertions
+		softAssert.assertAll();
+		
+		driver.quit();
+
+	}
+
+	//First Initialisation
+	public static List<WebElement> initialisation(WebDriver driver){
+		// Go to Register Page
+				WebElement myAccount = driver.findElement(By.xpath("(//span[@class='d-none d-md-inline'])[3]"));
+				WebElement register = driver.findElement(By.xpath(
+						"//a[@href='http://localhost/opencart/upload/index.php?route=account/register&language=en-gb']"));
+				
+				List<WebElement> webEle= List.of(myAccount,register);
+				return webEle;
+		
+		
+	}
+	
+	//Register Form Initialization
+	public static List<WebElement> formInit(WebDriver driver,JavascriptExecutor js, WebDriverWait wait){
+		// Fill out the registration form
+				WebElement firstNameField = driver.findElement(By.id("input-firstname"));
+				WebElement lastNameField = driver.findElement(By.id("input-lastname"));
+				WebElement emailField = driver.findElement(By.id("input-email"));
+				WebElement passField = driver.findElement(By.id("input-password"));
+				WebElement subscribe = driver.findElement(By.id("input-newsletter"));
+				js.executeScript("arguments[0].scrollIntoView(true);", subscribe);
+				wait.until(ExpectedConditions.elementToBeClickable(subscribe));
+				
+				WebElement agreeCheckbox = driver.findElement(By.cssSelector("input[name='agree']"));
+				js.executeScript("arguments[0].scrollIntoView(true);", agreeCheckbox);
+				wait.until(ExpectedConditions.elementToBeClickable(agreeCheckbox));
+				
+				WebElement submit = driver.findElement(By.xpath("//button[@class='btn btn-primary']"));
+				js.executeScript("arguments[0].scrollIntoView(true);", submit);
+				wait.until(ExpectedConditions.elementToBeClickable(submit));
+				
+				WebElement errorMessage = driver.findElement(By.id("error-email"));
+				List<WebElement> webEle = List.of(firstNameField,lastNameField,emailField,passField,subscribe,agreeCheckbox,submit,errorMessage);
+				return webEle;
+	}
+	
+	// random emailId generator function
+	public static String generateUniqueEmail(String firstName, String lastName) {
+		 String baseEmail =firstName +"."+lastName;
+	        String domain = "@gmail.com";
+	        int randomNumber = new Random().nextInt(10000);  // Generate a random number to ensure uniqueness
+	        return baseEmail + randomNumber + domain;
+	}
+}

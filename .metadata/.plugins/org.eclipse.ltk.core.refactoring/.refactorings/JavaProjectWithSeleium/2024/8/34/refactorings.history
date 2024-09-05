@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename type &apos;ChromeOptions&apos; to &apos;ChromeOptionsExample&apos;&#x0D;&#x0A;- Original project: &apos;JavaProjectWithSeleium&apos;&#x0D;&#x0A;- Original element: &apos;ChromeOptions&apos;&#x0D;&#x0A;- Renamed element: &apos;ChromeOptionsExample&apos;&#x0D;&#x0A;- Update references to refactored element&#x0D;&#x0A;- Update textual occurrences in comments and strings" description="Rename type &apos;ChromeOptions&apos;" flags="589830" id="org.eclipse.jdt.ui.rename.type" input="/src=/optional=/true=/=/maven.pomderived=/true=/&lt;{ChromeOptions.java[ChromeOptions" matchStrategy="1" name="ChromeOptionsExample" qualified="false" references="true" similarDeclarations="false" stamp="1724308251911" textual="false" version="1.0"/>
+</session>

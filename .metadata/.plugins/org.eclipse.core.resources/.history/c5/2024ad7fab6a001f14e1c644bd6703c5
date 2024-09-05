@@ -1,0 +1,14 @@
+package registerFunctionality;
+
+public class TC_REG_008 {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		// Test case description...
+    	/*
+         * Test case ID- TC_REG_008 test case scenario - (TS_UI_002) Register Functionality
+         * Validate the registration of an account by providing all the required fields.
+         */
+	}
+
+}

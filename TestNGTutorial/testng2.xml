@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="Loan Department">
+<parameter name="URL" value="personalloan.com"/>
+<parameter name="APIKey/usrname" value="123456"/>
+    <test name="Personal loan">
+  <packages>
+      <package name= "test"/>
+          
+  </packages>
+  </test>
+</suite> 

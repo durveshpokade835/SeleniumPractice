@@ -1,0 +1,29 @@
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
+
+public class TC_REG_001 {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+
+		/*
+		 * Test case ID- TC_REG_001 test case scenario - (TS_UI_001) UI Validation
+		 * Validate the UI fields in the Header section (id='top').
+		 */
+		System.setProperty("webdriver.chrome.driver", "D:\\Bits New Trainning Automation\\Drivers/chromedriver.exe");
+		// SSL check and Chrome Options features
+		ChromeOptions options = new ChromeOptions();
+
+		// Accept insecure certificates
+		options.setAcceptInsecureCerts(true);
+		WebDriver driver = new ChromeDriver(options);
+
+		driver.get("https://demo.opencart.com/");
+		driver.findElement(By.xpath("(//span[@class='d-none d-md-inline'])[3]")).click();
+		driver.findElement(By.xpath("(//a[@class='dropdown-item'])[4]")).click();
+
+	}
+
+}

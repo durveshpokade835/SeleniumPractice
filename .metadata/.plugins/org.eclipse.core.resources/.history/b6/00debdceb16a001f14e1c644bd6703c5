@@ -1,0 +1,21 @@
+package registerFunctionality;
+
+public class TC_REG_009 {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		// Test case description...
+		/*
+		 * Test case ID- TC_REG_009 test case scenario - (TS_UI_003) Register
+		 * Validate that proper notification messages are displayed for the mandatory fields when no information is provided on the 'Register Account' page and the form is submitted..
+		 */
+		
+		System.setProperty("webdriver.chrome.driver", "D:\\Bits New Trainning Automation\\Drivers/chromedriver.exe");
+		
+		
+		
+		
+		
+	}
+
+}
